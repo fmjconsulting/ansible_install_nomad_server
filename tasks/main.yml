@@ -7,7 +7,7 @@
 
 - name: Download Nomad
   get_url: 
-    url: https://releases.hashicorp.com/Nomad/${NOMAD_VERSION}/Nomad_{{ NOMAD_VERSION }}_linux_amd64.zip
+    url: https://releases.hashicorp.com/Nomad/{{ NOMAD_VERSION }}/Nomad_{{ NOMAD_VERSION }}_linux_amd64.zip
     validate_certs: no
     dest: /tmp/
 
