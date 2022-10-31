@@ -13,10 +13,12 @@
 
 - name: Unzip Nomad
   unarchive:
-    src: Nomad_{{ NOMAD_VERSION }}_linux_amd64.zip
+    remote_src: yes
+    src: https://releases.hashicorp.com/nomad/{{ NOMAD_VERSION }}/nomad_{{ NOMAD_VERSION }}_linux_amd64.zip
     dest: /usr/local/bin/
     owner: root
     group: root
+    validate_certs: no
   notify: verify_consul_version_installed
 
 - name: Install Nomad autocompletion 1/2
