@@ -1,0 +1,79 @@
+
+- name: set hostname
+  ansible.builtin.hostname:
+    name: etcdMasterLeader
+    use: systemd
+  when: NOMAD_SERVER_LEADER | bool
+
+- name: Download Nomad
+  get_url: 
+    url: https://releases.hashicorp.com/Nomad/${NOMAD_VERSION}/Nomad_{{ NOMAD_VERSION }}_linux_amd64.zip
+    validate_certs: no
+    dest: /tmp/
+
+- name: Unzip Nomad
+  unarchive:
+    src: Nomad_{{ NOMAD_VERSION }}_linux_amd64.zip
+    dest: /usr/local/bin/
+    owner: root
+    group: root
+  notify: verify_consul_version_installed
+
+- name: Install Nomad autocompletion 1/2
+  command: nomad -autocomplete-install
+
+- name: Install Nomad autocompletion 2/2
+  command: complete -C /usr/local/bin/nomad nomad
+
+- name: Create data directory for Nomad
+  file:
+    path: /opt/nomad
+    state: directory
+
+# sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
+- name: Create a unique non-privileged system user to run Nomad
+  user:
+    name: nomad
+    home: /etc/nomad.d
+    shell: /bin/false
+    system: true
+
+- name: Copy systemd service file to server
+  copy:
+    src: nomad.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+
+# Setup Nomad common configuration
+- name: copy configuration file at /etc/nomad.d/nomad.hcl
+  template:
+    src: nomad.hcl.j2
+    dest: /etc/nomad.d/nomad.hcl
+
+# Setup Nomad server leader configuration
+- name: Create a server leader configuration file at /etc/nomad.d/server.hcl
+  template:
+    src: server.hcl.j2
+    dest: /etc/nomad.d/server_leader.hcl
+  when: NOMAD_SERVER_LEADER | bool
+
+# Setup Nomad server follower configuration
+- name: Create a server follower configuration file at /etc/nomad.d/server.hcl
+  template:
+    src: server.hcl.j2
+    dest: /etc/nomad.d/server_follower.hcl
+  when: not NOMAD_SERVER_LEADER | bool
+
+# Setup Nomad client configuration
+- name: Create a configuration file at /etc/nomad.d/client.hcl
+  template:
+    src: client.hcl.j2
+    dest: /etc/nomad.d/client.hcl
+  when: NOMAD_CLIENT | bool
+
+- name: Start Nomad
+  systemd:
+    name: nomad
+    state: started
+    enabled: yes

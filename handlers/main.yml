@@ -1,0 +1,3 @@
+- name: verify_nomad_version_installed
+  shell:
+    cmd: nomad version
