@@ -30,8 +30,8 @@
   command: nomad -autocomplete-install
 
 # /usr/share/bash-completion/completions/
-- name: Install Nomad autocompletion 2/2
-  shell: sudo /usr/share/bash-completion/completions/complete -C /usr/local/bin/nomad nomad
+#- name: Install Nomad autocompletion 2/2
+#  shell: sudo /usr/share/bash-completion/completions/complete -C /usr/local/bin/nomad nomad
 
 - name: Create data directory for Nomad
   file:
