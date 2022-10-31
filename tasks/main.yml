@@ -64,14 +64,14 @@
     dest: /etc/nomad.d/nomad.hcl
 
 # Setup Nomad server leader configuration
-- name: Create a server leader configuration file at /etc/nomad.d/server.hcl
+- name: Create a server LEADER configuration file
   template:
     src: server.hcl.j2
     dest: /etc/nomad.d/server_leader.hcl
   when: NOMAD_SERVER_LEADER | bool
 
 # Setup Nomad server follower configuration
-- name: Create a server follower configuration file at /etc/nomad.d/server.hcl
+- name: Create a server FOLLOWER configuration file
   template:
     src: server.hcl.j2
     dest: /etc/nomad.d/server_follower.hcl
