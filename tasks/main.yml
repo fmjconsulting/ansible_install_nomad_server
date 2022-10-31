@@ -5,6 +5,11 @@
     use: systemd
   when: NOMAD_SERVER_LEADER | bool
 
+- name: Install unzip (state=present is optional)
+  ansible.builtin.apt:
+    name: unzip
+    state: present
+
 - name: Download Nomad
   get_url: 
     url: https://releases.hashicorp.com/nomad/{{ NOMAD_VERSION }}/nomad_{{ NOMAD_VERSION }}_linux_amd64.zip
