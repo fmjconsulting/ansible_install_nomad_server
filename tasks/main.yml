@@ -29,9 +29,9 @@
 - name: Install Nomad autocompletion 1/2
   command: nomad -autocomplete-install
 
+# /usr/share/bash-completion/completions/
 - name: Install Nomad autocompletion 2/2
-  become: true
-  command: /usr/share/bash-completion/completions/complete -C /usr/local/bin/nomad nomad
+  shell: complete -C /usr/local/bin/nomad nomad
 
 - name: Create data directory for Nomad
   file:
