@@ -37,6 +37,9 @@
   file:
     path: /opt/nomad
     state: directory
+    recurse: yes
+    owner: nomad
+    group: nomad  
 
 # sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
 - name: Create a unique non-privileged system user to run Nomad
