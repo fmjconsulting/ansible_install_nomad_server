@@ -74,7 +74,7 @@
   when: not NOMAD_SERVER_LEADER | bool
 
 # Setup Nomad client configuration
-- name: Create a configuration file at /etc/nomad.d/client.hcl
+- name: Create a client configuration file at /etc/nomad.d/client.hcl
   template:
     src: client.hcl.j2
     dest: /etc/nomad.d/client.hcl
