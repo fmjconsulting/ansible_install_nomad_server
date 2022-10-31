@@ -24,7 +24,7 @@
     owner: root
     group: root
     validate_certs: no
-  notify: verify_consul_version_installed
+  notify: verify_nomad_version_installed
 
 - name: Install Nomad autocompletion 1/2
   command: nomad -autocomplete-install
