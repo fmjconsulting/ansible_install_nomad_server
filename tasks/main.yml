@@ -33,21 +33,22 @@
 #- name: Install Nomad autocompletion 2/2
 #  shell: sudo /usr/share/bash-completion/completions/complete -C /usr/local/bin/nomad nomad
 
+# sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
+- name: Create a unique non-privileged system user to run Nomad
+  user:
+    name: nomad
+    #group: nomad
+    home: /etc/nomad.d
+    shell: /bin/false
+    system: true
+
 - name: Create data directory for Nomad
   file:
     path: /opt/nomad
     state: directory
     recurse: yes
     owner: nomad
-    group: nomad  
-
-# sudo useradd --system --home /etc/nomad.d --shell /bin/false nomad
-- name: Create a unique non-privileged system user to run Nomad
-  user:
-    name: nomad
-    home: /etc/nomad.d
-    shell: /bin/false
-    system: true
+    group: nomad
 
 - name: Copy systemd service file to server
   copy:
